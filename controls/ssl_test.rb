@@ -28,10 +28,8 @@
 control 'ssl2' do
   title 'Disable SSL 2 from all exposed SSL ports.'
   impact 1.0
-  # create a description
-  proc_desc = "on node == #{target_hostname} running #{port: 443[:socket].process.inspect} (#{port: 443[:socket].pid})"
-  describe ssl(port: 443).protocols('ssl2') do
-    it(proc_desc) { should_not be_enabled }
+  describe ssl(host: 'localhost', port: 443).protocols('ssl2') do
+
     it { should_not be_enabled }
   end
 end
@@ -39,10 +37,7 @@ end
 control 'ssl3' do
   title 'Disable SSL 3 from all exposed SSL ports.'
   impact 1.0
-  # create a description
-  proc_desc = "on node == #{target_hostname} running #{port: 443[:socket].process.inspect} (#{port: 443[:socket].pid})"
-  describe ssl(port: 443).protocols('ssl3') do
-    it(proc_desc) { should_not be_enabled }
+  describe ssl(host: 'localhost', port: 443).protocols('ssl2') do
     it { should_not be_enabled }
   end
 end
@@ -50,10 +45,7 @@ end
 control 'tls1.0' do
   title 'Disable TLS 1.0 on exposed ports.'
   impact 0.5
-  # create a description
-  proc_desc = "on node == #{target_hostname} running #{port: 443[:socket].process.inspect} (#{port: 443[:socket].pid})"
-  describe ssl(port: 443).protocols('tls1.0') do
-    it(proc_desc) { should_not be_enabled }
+  describe ssl(host: 'localhost', port: 443).protocols('tls1.0') do
     it { should_not be_enabled }
   end
 end
@@ -61,10 +53,7 @@ end
 control 'tls1.1' do
   title 'Disable TLS 1.1 on exposed ports.'
   impact 0.5
-  # create a description
-  proc_desc = "on node == #{target_hostname} running #{port: 443[:socket].process.inspect} (#{port: 443[:socket].pid})"
-  describe ssl(port: 443).protocols('tls1.1') do
-    it(proc_desc) { should_not be_enabled }
+  describe ssl(host: 'localhost', port: 443).protocols('tls1.1') do
     it { should_not be_enabled }
   end
 end
@@ -72,10 +61,7 @@ end
 control 'tls1.2' do
   title 'Enable TLS 1.2 on exposed ports.'
   impact 0.5
-  # create a description
-  proc_desc = "on node == #{target_hostname} running #{port: 443[:socket].process.inspect} (#{port: 443[:socket].pid})"
-  describe ssl(port: 443).protocols('tls1.2') do
-    it(proc_desc) { should be_enabled }
+  describe ssl(host: 'localhost', port: 443).protocols('tls1.2') do
     it { should be_enabled }
   end
 end
