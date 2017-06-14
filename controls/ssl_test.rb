@@ -6,7 +6,7 @@
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
+# Unless rmatchuired by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
@@ -28,40 +28,40 @@
 control 'ssl2' do
   title 'Disable SSL 2 from all exposed SSL ports.'
   impact 1.0
-  describe ssl(host: 'localhost', port: 443).protocols('ssl2') do
+  describe command('echo "EOF" | openssl s_client -connect 127.0.0.1:443/cart -ssl3') do
 
-    it { should_not be_enabled }
+    its('stdout') { should_not match /Secure Renegotiation IS supported/ }
   end
 end
 
 control 'ssl3' do
   title 'Disable SSL 3 from all exposed SSL ports.'
   impact 1.0
-  describe ssl(host: 'localhost', port: 443).protocols('ssl2') do
-    it { should_not be_enabled }
+  describe command('echo "EOF" | openssl s_client -connect 127.0.0.1:443/cart -ssl3') do
+    its('stdout') { should_not match /Secure Renegotiation IS supported/ }
   end
 end
 
 control 'tls1.0' do
   title 'Disable TLS 1.0 on exposed ports.'
   impact 0.5
-  describe ssl(host: 'localhost', port: 443).protocols('tls1.0') do
-    it { should_not be_enabled }
+  describe command('echo "EOF" | openssl s_client -connect 127.0.0.1:443/cart -tls1_0') do
+    its('stdout') { should_not match /Secure Renegotiation IS supported/ }
   end
 end
 
 control 'tls1.1' do
   title 'Disable TLS 1.1 on exposed ports.'
   impact 0.5
-  describe ssl(host: 'localhost', port: 443).protocols('tls1.1') do
-    it { should_not be_enabled }
+  describe command('echo "EOF" | openssl s_client -connect 127.0.0.1:443/cart -tls1_1') do
+    its('stdout') { should_not match /Secure Renegotiation IS supported/ }
   end
 end
 
 control 'tls1.2' do
   title 'Enable TLS 1.2 on exposed ports.'
   impact 0.5
-  describe ssl(host: 'localhost', port: 443).protocols('tls1.2') do
-    it { should be_enabled }
+  describe command('echo "EOF" | openssl s_client -connect 127.0.0.1:443/cart -tls1_2') do
+    its('stdout') { should match /Secure Renegotiation IS supported/ }
   end
 end
